@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class Feedback extends Component {
+class Mensagem extends Component {
   render() {
     const numberFixo = 3;
     const { respostas } = this.props;
@@ -16,7 +16,7 @@ class Feedback extends Component {
   }
 }
 
-Feedback.propTypes = {
+Mensagem.propTypes = {
   respostas: PropTypes.number.isRequired,
 
 };
@@ -25,4 +25,4 @@ const mapStateToProps = (state) => ({
   respostas: state,
 });
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps)(Mensagem);
