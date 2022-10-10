@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import getTriviaAPI from '../services/triviaAPI';
+import { submitUserEmail, submitUserName } from '../redux/actions';
+import user from '../redux/reducers/login';
+
 
 class Login extends React.Component {
   state = {
@@ -29,7 +32,10 @@ class Login extends React.Component {
   // ssad
 
   handleClick = async () => {
-    const { history } = this.props;
+    const { dispatch ,history } = this.props;
+    const { email, name } = this.state
+    dispatch(submitUserEmail(email))
+    dispatch(submitUserName(name))
     const api = await getTriviaAPI();
     console.log(api);
     localStorage.setItem('token', api.token);
