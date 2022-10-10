@@ -29,7 +29,7 @@ class Login extends React.Component {
     return (
       <div className="main">
         <label htmlFor="name">
-          Email:
+          Nome:
           <input
             type="text"
             name="name"
