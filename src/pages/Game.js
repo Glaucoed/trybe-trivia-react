@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Questions from '../components/Questions';
 import getQuestions from '../services/questionsAPI';
-import { connect } from 'react-redux';
 
 class Game extends Component {
   state = {
@@ -31,14 +31,14 @@ class Game extends Component {
 
   render() {
     const { questions, loading } = this.state;
-    const { history } = this.props
+    const { history } = this.props;
     return (
       <div>
         <Header />
         {
           loading
             ? <p>Carregando</p>
-            : <Questions questions={ questions } history={history} />
+            : <Questions questions={ questions } history={ history } />
         }
 
       </div>
@@ -52,4 +52,4 @@ Game.propTypes = {
   }).isRequired,
 };
 
-export default connect()(Game)
+export default connect()(Game);
