@@ -56,25 +56,28 @@ class Questions extends React.Component {
   };
 
   changePage = () => {
+    const numero4 = 4;
     const { count } = this.state;
     const { questions, history } = this.props;
-    if ( count === 4) {
-      history.push("/feedback")
+    if (count < numero4) {
+      const {
+        incorrect_answers: incorrect,
+        correct_answer: correct,
+      } = questions[count + 1];
+      this.setState(() => {
+        const newArray = [...incorrect, correct];
+        const arrayAleatorio = this.shuffleArray(newArray);
+        this.setState({ arrayEscolhido: arrayAleatorio,
+          buttonNextDisabled: false,
+          disabledButton: false,
+          questionTimer: 30 });
+      }, () => {
+        this.setState({ count: count + 1 });
+      });
     }
-    const {
-      incorrect_answers: incorrect,
-      correct_answer: correct,
-    } = questions[count + 1];
-    this.setState(() => {
-      const newArray = [...incorrect, correct];
-      const arrayAleatorio = this.shuffleArray(newArray);
-      this.setState({ arrayEscolhido: arrayAleatorio,
-        buttonNextDisabled: false,
-        disabledButton: false,
-        questionTimer: 30 });
-    }, () => {
-      this.setState({ count: count + 1 });
-    });
+    if (count === numero4) {
+      history.push('/feedback');
+    }
   };
 
   score = (diff) => {
@@ -173,6 +176,10 @@ class Questions extends React.Component {
 }
 
 Questions.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   questions: PropTypes.arrayOf(PropTypes.shape({
     category: PropTypes.string,
     question: PropTypes.string,
@@ -181,7 +188,6 @@ Questions.propTypes = {
     difficulty: PropTypes.string.isRequired,
     history: PropTypes.objectOf(PropTypes.string).isRequired,
   }).isRequired).isRequired,
-  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect()(Questions);
