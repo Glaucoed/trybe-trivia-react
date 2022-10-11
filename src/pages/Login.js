@@ -27,15 +27,12 @@ class Login extends React.Component {
     }
   };
 
-  // ssad
-
   handleClick = async () => {
     const { dispatch, history } = this.props;
     const { email, name } = this.state;
     dispatch(submitUserEmail(email));
     dispatch(submitUserName(name));
     const api = await getTriviaAPI();
-    console.log(api);
     localStorage.setItem('token', api.token);
     history.push('/game');
   };

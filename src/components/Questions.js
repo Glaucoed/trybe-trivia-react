@@ -1,56 +1,45 @@
-import React from "react";
-import { connect } from "react-redux";
-import getQuestions from "../services/questionsAPI";
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Questions extends React.Component {
   state = {
-    category: '',
-    question: '',
     count: 0,
-    questionType: true,
-    correctAnswer: ''
-  }
+  };
 
-  async componentDidMount () {
-    const { questions } = this.props
-    const { count } = this.state
-    this.setState({category: questions[count].category,
-    question: questions[count].question,
-    count: count + 1}, () => {
-      this.checkType()
-    })
-  }
+  shuffleArray = (arr) => {
+    for (let index = arr.length - 1; index > 0; index -= 1) {
+      const replace = Math.floor(Math.random() * (index + 1));
+      [arr[index], arr[replace]] = [arr[replace], arr[index]];
+    }
+    return arr;
+  };
 
-  checkType = () => {
-    const { questions } = this.props
-    const { count } = this.state
-    if (questions[count].type === "multiple") {
-      this.setState({questionType: true})
-    } 
-    this.setState({questionType: false})
-  }
+  verificaResp = (event) => {
+    const { questions } = this.props;
+    const { count } = this.state;
+    const { correct_answer: correct } = questions[count];
+    if (event.target.innerText === correct) {
+      this.setState({ count: count + 1 });
+      return console.log('verdade');
+    }
+    this.setState({ count: count + 1 });
+    return console.log('falso');
+  };
 
-  shuffleArray = () => {
-    const arr = []
-    const { questions } = this.props
-    const { count } = this.state
-    console.log(questions[0].correct_answer)
-    //arr.push(questions[0].correct_answer)
-    //console.log(arr)
-    // Loop em todos os elementos
-    for (let i = arr.length - 1; i > 0; i--) {
-        // Escolhendo elemento aleatório
-    const j = Math.floor(Math.random() * (i + 1));
-    // Reposicionando elemento
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-// Retornando array com aleatoriedade
-  return arr;
-  }
+  render() {
+    const { count } = this.state;
+    const { questions } = this.props;
+    const {
+      category,
+      question,
+      incorrect_answers: incorrect,
+      correct_answer: correct,
+    } = questions[count];
 
-  render () {
-    const { category, question, questionType } = this.state
-    const { questions } = this.props
+    const newArray = [...incorrect, correct];
+    const arrayAleatorio = this.shuffleArray(newArray);
+
     return (
       <div>
         <div data-testid="question-category">
@@ -61,14 +50,32 @@ class Questions extends React.Component {
         </div>
         <div data-testid="answer-options">
           {
-            questionType ? this.shuffleArray()
-            :
-            <p>false</p>
+            arrayAleatorio.map((resp, index) => (
+              <button
+                type="button"
+                key={ resp }
+                onClick={ (event) => this.verificaResp(event) }
+                data-testid={ resp === correct
+                  ? 'correct-answer'
+                  : `wrong-answer-${index}` }
+              >
+                {resp}
+              </button>
+            ))
           }
         </div>
-      </div>  
-    )
+      </div>
+    );
   }
 }
- 
-export default connect()(Questions)
+
+Questions.propTypes = {
+  questions: PropTypes.arrayOf(PropTypes.shape({
+    category: PropTypes.string,
+    question: PropTypes.string,
+    incorrect_answers: PropTypes.arrayOf(PropTypes.string).isRequired,
+    correct_answer: PropTypes.string,
+  }).isRequired).isRequired,
+};
+
+export default connect()(Questions);
