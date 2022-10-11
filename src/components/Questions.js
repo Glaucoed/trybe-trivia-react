@@ -6,6 +6,7 @@ import '../App.css';
 class Questions extends React.Component {
   state = {
     count: 0,
+    disabledButton: false,
   };
 
   shuffleArray = (arr) => {
@@ -29,8 +30,9 @@ class Questions extends React.Component {
   };
 
   render() {
-    const { count } = this.state;
+    const { count, disabledButton } = this.state;
     const { questions } = this.props;
+    const questionTimer = 30000;
     const {
       category,
       question,
@@ -54,6 +56,7 @@ class Questions extends React.Component {
             arrayAleatorio.map((resp, index) => (
               <button
                 type="button"
+                disabled={ disabledButton }
                 key={ resp }
                 className={ resp === correct
                   ? 'correct'
@@ -68,6 +71,11 @@ class Questions extends React.Component {
             ))
           }
         </div>
+        {setTimeout(() => {
+          this.setState({
+            disabledButton: true,
+          });
+        }, questionTimer)}
       </div>
     );
   }
