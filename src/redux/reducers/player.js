@@ -2,11 +2,11 @@ const INITIAL_STATE = {
   score: 0,
 };
 
-function game(state = INITIAL_STATE, action) {
+function player(state = INITIAL_STATE, action) {
   switch (action.type) {
   default:
     return state;
   }
 }
 
-export default game;
+export default player;
