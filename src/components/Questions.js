@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import '../App.css';
 
 class Questions extends React.Component {
   state = {
@@ -54,6 +55,9 @@ class Questions extends React.Component {
               <button
                 type="button"
                 key={ resp }
+                className={ resp === correct
+                  ? 'correct'
+                  : 'wrong' }
                 onClick={ (event) => this.verificaResp(event) }
                 data-testid={ resp === correct
                   ? 'correct-answer'
