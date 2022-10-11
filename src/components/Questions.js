@@ -6,7 +6,9 @@ import '../App.css';
 class Questions extends React.Component {
   state = {
     count: 0,
+    arrayEscolhido: [],
     disabledButton: false,
+    questionTimer: 30,
   };
 
   shuffleArray = (arr) => {
@@ -17,31 +19,90 @@ class Questions extends React.Component {
     return arr;
   };
 
-  verificaResp = (event) => {
+  componentDidMount() {
+    const { count, disabledButton, questionTimer } = this.state;
     const { questions } = this.props;
-    const { count } = this.state;
-    const { correct_answer: correct } = questions[count];
-    if (event.target.innerText === correct) {
-      this.setState({ count: count + 1 });
-      return console.log('verdade');
-    }
-    this.setState({ count: count + 1 });
-    return console.log('falso');
-  };
-
-  render() {
-    const { count, disabledButton } = this.state;
-    const { questions } = this.props;
-    const questionTimer = 30000;
     const {
       category,
       question,
       incorrect_answers: incorrect,
       correct_answer: correct,
     } = questions[count];
-
     const newArray = [...incorrect, correct];
     const arrayAleatorio = this.shuffleArray(newArray);
+    this.setState({arrayEscolhido: arrayAleatorio}, () => {
+      console.log(this.state.arrayEscolhido)
+    })
+  }
+
+  verificaResp = (event) => {
+    const { questions } = this.props;
+    const { count } = this.state;
+    const {
+      category,
+      question,
+      incorrect_answers: incorrect,
+      correct_answer: correct,
+      difficulty: difficulty,
+    } = questions[count];
+    if (event.target.innerText === correct) {
+      console.log(difficulty)
+      console.log(this.score(difficulty))
+      this.setState({disabledButton: true,
+      questionTimer: "resposta certa"})
+      return console.log('verdade');
+    }
+    this.setState({disabledButton: true,
+    questionTimer: "resposta errada"})
+    return console.log('falso');
+  };
+
+  score = (diff) => {
+    const { questionTimer } = this.state
+    switch (diff) {
+      case 'easy':
+        const thisScoreEasy= 10 * (questionTimer * 1)
+        return thisScoreEasy
+      case 'medium':
+        const thisScoreMedium = 10 * (questionTimer * 2)
+        return thisScoreMedium
+      case 'hard':
+        const thisScoreHard = 10 * (questionTimer * 3)
+        return thisScoreHard
+      default :
+        null
+    }
+    
+  }
+  
+
+  timer = () => {
+    const { questionTimer } = this.state
+    const number = 1000
+    if ( questionTimer > 0) {
+      setTimeout(() => {
+        this.setState( (prevState) => ({
+          questionTimer: prevState.questionTimer - 1
+        }))       
+      }, number)
+    }
+    if (questionTimer === 0 ) {
+      this.setState({disabledButton: true,
+      questionTimer: 'acabou o tempo'})
+    }
+  }
+
+  render() {
+    this.timer()
+    const { count, disabledButton, questionTimer, arrayEscolhido } = this.state;
+    const { questions } = this.props;
+    const {
+      category,
+      question,
+      incorrect_answers: incorrect,
+      correct_answer: correct,
+      difficulty: difficulty
+    } = questions[count];
 
     return (
       <div>
@@ -53,7 +114,7 @@ class Questions extends React.Component {
         </div>
         <div data-testid="answer-options">
           {
-            arrayAleatorio.map((resp, index) => (
+            arrayEscolhido.map((resp, index) => (
               <button
                 type="button"
                 disabled={ disabledButton }
@@ -71,11 +132,7 @@ class Questions extends React.Component {
             ))
           }
         </div>
-        {setTimeout(() => {
-          this.setState({
-            disabledButton: true,
-          });
-        }, questionTimer)}
+        <p>{questionTimer}</p>
       </div>
     );
   }
