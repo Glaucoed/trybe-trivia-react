@@ -57,7 +57,10 @@ class Questions extends React.Component {
 
   changePage = () => {
     const { count } = this.state;
-    const { questions } = this.props;
+    const { questions, history } = this.props;
+    if ( count === 4) {
+      history.push("/feedback")
+    }
     const {
       incorrect_answers: incorrect,
       correct_answer: correct,
@@ -176,6 +179,7 @@ Questions.propTypes = {
     incorrect_answers: PropTypes.arrayOf(PropTypes.string).isRequired,
     correct_answer: PropTypes.string,
     difficulty: PropTypes.string.isRequired,
+    history: PropTypes.objectOf(PropTypes.string).isRequired,
   }).isRequired).isRequired,
   dispatch: PropTypes.func.isRequired,
 };
