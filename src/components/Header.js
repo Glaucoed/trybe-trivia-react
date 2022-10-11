@@ -11,7 +11,10 @@ class Header extends Component {
       <div>
         <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${hash}` } alt={ `Foto da pessoa ${name}` } />
         <p data-testid="header-player-name">{name}</p>
-        <p data-testid="header-score">{score}</p>
+        <p data-testid="header-score">
+          Score:
+          {score}
+        </p>
       </div>
     );
   }
@@ -26,7 +29,7 @@ const mapStateToProps = (state) => ({
 Header.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  score: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
