@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Questions from '../components/Questions';
 import getQuestions from '../services/questionsAPI';
+import { connect } from 'react-redux';
 
-export default class Game extends Component {
+class Game extends Component {
   state = {
     questions: [],
     loading: true,
@@ -30,13 +31,14 @@ export default class Game extends Component {
 
   render() {
     const { questions, loading } = this.state;
+    const { history } = this.props
     return (
       <div>
         <Header />
         {
           loading
             ? <p>Carregando</p>
-            : <Questions questions={ questions } />
+            : <Questions questions={ questions } history={history} />
         }
 
       </div>
@@ -49,3 +51,5 @@ Game.propTypes = {
     push: PropTypes.func,
   }).isRequired,
 };
+
+export default connect()(Game)
