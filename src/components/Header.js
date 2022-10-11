@@ -11,10 +11,7 @@ class Header extends Component {
       <div>
         <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${hash}` } alt={ `Foto da pessoa ${name}` } />
         <p data-testid="header-player-name">{name}</p>
-        <p data-testid="header-score">
-          Score:
-          {score}
-        </p>
+        <p data-testid="header-score">{score}</p>
       </div>
     );
   }
