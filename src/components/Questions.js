@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../App.css';
-import { submitScore } from '../redux/actions';
+import { submitScore, submitAssertions } from '../redux/actions';
 
 class Questions extends React.Component {
   state = {
@@ -44,6 +44,7 @@ class Questions extends React.Component {
       const { dispatch } = this.props;
       const scoreA = (this.score(difficulty));
       dispatch(submitScore(scoreA));
+      dispatch(submitAssertions(1));
       this.setState({ disabledButton: true,
         buttonNextDisabled: true,
         questionTimer: 'resposta certa' });
