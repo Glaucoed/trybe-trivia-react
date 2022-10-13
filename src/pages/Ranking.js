@@ -1,15 +1,38 @@
-import React from 'react-dom';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-class Ranking extends React.Component {
+class Ranking extends Component {
+  handleHome = () => {
+    const { history } = this.props;
+    history.push('/');
+  };
+
   render() {
+    console.log(this.props);
     return (
       <div>
-        <title data-testid="btn-ranking">
+        <h1 data-testid="ranking-title">
           Ranking
-        </title>
+        </h1>
+        <button
+          data-testid="btn-go-home"
+          type="button"
+          onClick={ () => this.handleHome() }
+        >
+          Home
+
+        </button>
       </div>
     );
   }
 }
 
-export default Ranking;
+Ranking.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+    ,
+  }).isRequired,
+};
+
+export default connect()(Ranking);
