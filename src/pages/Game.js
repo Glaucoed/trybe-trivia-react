@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Questions from '../components/Questions';
 import getQuestions from '../services/questionsAPI';
+import { startGame } from '../redux/actions';
 
 class Game extends Component {
   state = {
@@ -12,6 +13,8 @@ class Game extends Component {
   };
 
   async componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(startGame(0));
     await this.getStorage();
   }
 
@@ -50,6 +53,7 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect()(Game);
