@@ -3,8 +3,10 @@ import { screen, waitFor } from '@testing-library/react';
 import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import Game from '../pages/Game';
 import { questionsResponse } from './helpers/gameMock';
+import { invalidTokenQuestionsResponse } from '../../cypress/mocks/questions';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
+import {createMemoryHistory} from 'history'
 
 global.fetch = jest.fn(questionsResponse)
 describe('Teste o componente Game', () => {
@@ -16,6 +18,15 @@ describe('Teste o componente Game', () => {
     const category = await screen.findByTestId('question-category')
     expect(category).toBeInTheDocument();
   })
+
+  it('Testa game erro token', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn().mockResolvedValue(invalidTokenQuestionsResponse),
+    });
+    const history = createMemoryHistory()
+    renderWithRouterAndRedux(<Game history={history} />);
+  })
+
 
 
   it('testa resposta correta', async () => {
@@ -33,7 +44,7 @@ describe('Teste o componente Game', () => {
       json: jest.fn().mockResolvedValue(questionsResponse),
     });
     renderWithRouterAndRedux(<Game />);
-    const incorrectAswer = await screen.findByTestId('wrong-answer-0')
+    const incorrectAswer = await screen.findByText('True')
     userEvent.click(incorrectAswer)
   })
 
@@ -42,7 +53,8 @@ describe('Teste o componente Game', () => {
     global.fetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue(questionsResponse),
     });
-    const { history } = renderWithRouterAndRedux(<Game />);
+    const history = createMemoryHistory()
+    renderWithRouterAndRedux(<Game history={history} />);
     const correctAswer = await screen.findByTestId('correct-answer')
     userEvent.click(correctAswer)
     const nextBtn = await screen.findByTestId('btn-next')
@@ -62,7 +74,8 @@ describe('Teste o componente Game', () => {
     const fiveCorrect = await screen.findByTestId('correct-answer')
     userEvent.click(fiveCorrect)
     const fiveNext = await screen.findByTestId('btn-next')
-    userEvent.click(fiveNext)
+    act(() => userEvent.click(fiveNext))
+    expect(history.location.pathname).toBe('/feedback')
   })
   
 });

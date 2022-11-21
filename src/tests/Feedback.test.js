@@ -3,6 +3,19 @@ import { screen } from '@testing-library/react';
 import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import Feedback from '../pages/Feedback';
 
+const initialStateFour = {
+  player: {
+    score: 0,
+    assertions: 4,
+  },
+};
+const initialStateZero = {
+  player: {
+    score: 0,
+    assertions: 0,
+  },
+};
+
 const playersStorage = [
   {
     playerScore: 830,
@@ -47,7 +60,7 @@ const setLocalStorage = (id, data) => {
 
 describe('Teste o componente Feedback', () => {
   it('Verifica elementos', () => {
-    renderWithRouterAndRedux(<Feedback />);
+    renderWithRouterAndRedux(<Feedback />, initialStateZero);
     const img = screen.getByRole('img', { name: /foto da pessoa/i });
     expect(img).toBeInTheDocument();
 
@@ -60,6 +73,11 @@ describe('Teste o componente Feedback', () => {
     const buttonRanking = screen.getByRole('button', { name: /ranking/i });
     expect(buttonRanking).toBeInTheDocument();
   });
+  it('verifica quatro assertions', () => {
+    renderWithRouterAndRedux(<Feedback />, initialStateFour);
+    const text = screen.getByText(/Well done!/i);
+    expect(text).toBeInTheDocument();
+  })
   it('Verifica localStorage', () => {
     setLocalStorage('players', playersStorage)
     renderWithRouterAndRedux(<Feedback />);
