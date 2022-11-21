@@ -1,4 +1,4 @@
-import { SUBMIT_SCORE, SUBMIT_ASSERTIONS } from '../actions';
+import { SUBMIT_SCORE, SUBMIT_ASSERTIONS, START_GAME } from '../actions';
 
 const INITIAL_STATE = {
   score: 0,
@@ -7,6 +7,12 @@ const INITIAL_STATE = {
 
 function player(state = INITIAL_STATE, action) {
   switch (action.type) {
+  case START_GAME:
+    return {
+      ...state,
+      score: 0,
+      assertions: 0,
+    };
   case SUBMIT_SCORE:
     return {
       ...state,
