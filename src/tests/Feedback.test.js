@@ -56,11 +56,9 @@ const setLocalStorage = (id, data) => {
   window.localStorage.setItem(id, JSON.stringify(data));
 };
 
-
-
 describe('Teste o componente Feedback', () => {
   it('Verifica elementos', () => {
-    renderWithRouterAndRedux(<Feedback />, initialStateZero);
+    renderWithRouterAndRedux(<Feedback />);
     const img = screen.getByRole('img', { name: /foto da pessoa/i });
     expect(img).toBeInTheDocument();
 
@@ -73,6 +71,7 @@ describe('Teste o componente Feedback', () => {
     const buttonRanking = screen.getByRole('button', { name: /ranking/i });
     expect(buttonRanking).toBeInTheDocument();
   });
+
   it('verifica quatro assertions', () => {
     renderWithRouterAndRedux(<Feedback />, initialStateFour);
     const text = screen.getByText(/Well done!/i);
