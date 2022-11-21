@@ -1,12 +1,19 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
-import Feedback from '../pages/Feedback';
+import Ranking from '../pages/Ranking';
+import { act } from 'react-dom/test-utils';
+import userEvent from '@testing-library/user-event';
 
 const playersStorage = [
   {
     playerScore: 830,
     playerName: 'caio',
+    playerImage: '9c43f62e5aa6bef78d8441974e42dcd9',
+  },
+  {
+    playerScore: 82,
+    playerName: 'pedro',
     playerImage: '9c43f62e5aa6bef78d8441974e42dcd9',
   }
 ]
@@ -43,25 +50,17 @@ const setLocalStorage = (id, data) => {
   window.localStorage.setItem(id, JSON.stringify(data));
 };
 
-
-
-describe('Teste o componente Feedback', () => {
-  it('Verifica elementos', () => {
-    renderWithRouterAndRedux(<Feedback />);
-    const img = screen.getByRole('img', { name: /foto da pessoa/i });
-    expect(img).toBeInTheDocument();
-
-    const text = screen.getByText(/could be better\.\.\./i);
-    expect(text).toBeInTheDocument();
-
-    const buttonPlay = screen.getByRole('button', { name: /play again/i });
-    expect(buttonPlay).toBeInTheDocument();
-
-    const buttonRanking = screen.getByRole('button', { name: /ranking/i });
-    expect(buttonRanking).toBeInTheDocument();
-  });
-  it('Verifica localStorage', () => {
-    setLocalStorage('players', playersStorage)
-    renderWithRouterAndRedux(<Feedback />);
-  });
+describe('Teste o componente Ranking', () => {
+  it('Testa nome caio', () => {
+    setLocalStorage('players', playersStorage);
+    renderWithRouterAndRedux(<Ranking />);
+    const name = screen.getByTestId('player-name-0');
+    expect(name).toBeInTheDocument();
+  })
+  it('Testa botao Home', () => {
+    setLocalStorage('players', playersStorage);
+    const { history } = renderWithRouterAndRedux(<Ranking />);
+    const homeBtn = screen.getByTestId('btn-go-home')
+    act(() => userEvent.click(homeBtn))
+  })
 });

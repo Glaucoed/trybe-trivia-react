@@ -1,65 +1,34 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Ranking extends Component {
-  handleHome = () => {
-    const { history } = this.props;
-    history.push('/');
-  };
-
-  crecentOrder = (arr) => {
-    console.log(arr);
-    const scoreArr = [];
-    const finalArr = [];
-    arr.forEach((p) => {
-      scoreArr.push(p.playerScore);
-    });
-    const ordenedScore = scoreArr.sort((a, b) => {
-      const NEGATIVEONE = -1;
-      if (a > b) return NEGATIVEONE;
-      if (a < b) return 1;
-      return 0;
-    });
-    console.log('ovots');
-    ordenedScore.forEach((s) => {
-      arr.forEach((i) => {
-        if (i.playerScore === s) {
-          finalArr.push(i);
-        }
-      });
-    });
-    return finalArr;
-  };
-
   render() {
     const players = JSON.parse(localStorage.getItem('players'));
-    const ordenedPlayers = this.crecentOrder(players);
+    const ordenedPlayers = players.sort((a, b) => b.playerScore - a.playerScore);
     return (
       <div>
         <h1 data-testid="ranking-title">
           Ranking
         </h1>
         {
-          ordenedPlayers.map((p, index) => {
-            console.log(index);
-            return (
-              <div key={ p.playerName + index }>
-                <img alt={ p.playerName } src={ `https://www.gravatar.com/avatar/${p.playerImage}` } />
-                <p data-testid={ `player-name-${index}` }>{p.playerName}</p>
-                <p data-testid={ `player-score-${index}` }>{p.playerScore}</p>
-              </div>
-            );
-          })
+          ordenedPlayers.map((p, index) => (
+            <div key={ p.playerName + index }>
+              <img alt={ p.playerName } src={ `https://www.gravatar.com/avatar/${p.playerImage}` } />
+              <p data-testid={ `player-name-${index}` }>{p.playerName}</p>
+              <p data-testid={ `player-score-${index}` }>{p.playerScore}</p>
+            </div>
+          ))
         }
-        <button
-          data-testid="btn-go-home"
-          type="button"
-          onClick={ () => this.handleHome() }
-        >
-          Home
-
-        </button>
+        <Link to="/">
+          <button
+            data-testid="btn-go-home"
+            type="button"
+          >
+            Home
+          </button>
+        </Link>
       </div>
     );
   }
