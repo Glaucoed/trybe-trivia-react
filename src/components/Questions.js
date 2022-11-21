@@ -37,10 +37,9 @@ class Questions extends React.Component {
     const { questions } = this.props;
     const { count } = this.state;
     const {
-      correct_answer: correct,
       difficulty,
     } = questions[count];
-    if (event.target.innerText === correct) {
+    if (event.target.className === 'correct') {
       const { dispatch } = this.props;
       const scoreA = (this.score(difficulty));
       dispatch(submitScore(scoreA));
@@ -82,6 +81,7 @@ class Questions extends React.Component {
   };
 
   score = (diff) => {
+    console.log(diff);
     const { questionTimer } = this.state;
     const ten = 10;
     const tre = 3;
@@ -99,7 +99,7 @@ class Questions extends React.Component {
       return thisScoreHard;
     }
     default:
-      return null;
+      return ten;
     }
   };
 
@@ -158,7 +158,7 @@ class Questions extends React.Component {
             ))
           }
         </div>
-        <p>{questionTimer}</p>
+        <p data-testid="question-timer">{questionTimer}</p>
         {
           buttonNextDisabled
           && (
