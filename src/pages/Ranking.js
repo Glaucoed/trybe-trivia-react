@@ -21,6 +21,7 @@ class Ranking extends Component {
       if (a < b) return 1;
       return 0;
     });
+    console.log('ovots');
     ordenedScore.forEach((s) => {
       arr.forEach((i) => {
         if (i.playerScore === s) {
