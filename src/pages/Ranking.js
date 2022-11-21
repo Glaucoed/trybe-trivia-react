@@ -45,8 +45,8 @@ class Ranking extends Component {
             console.log(index);
             return (
               <div key={ p.playerName + index }>
-                <img alt="playerImage" src={ `https://www.gravatar.com/avatar/${p.playerImage}` } />
-                <h1 data-testid={ `player-name-${index}` }>{p.playerName}</h1>
+                <img alt={ p.playerName } src={ `https://www.gravatar.com/avatar/${p.playerImage}` } />
+                <p data-testid={ `player-name-${index}` }>{p.playerName}</p>
                 <p data-testid={ `player-score-${index}` }>{p.playerScore}</p>
               </div>
             );
