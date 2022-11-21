@@ -8,7 +8,7 @@ const initialStateFour = {
     score: 0,
     assertions: 4,
   },
-};
+}
 const initialStateZero = {
   player: {
     score: 0,
